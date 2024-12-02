@@ -9,10 +9,6 @@ export function abortable<T>(
 ): Promise<T> {
   if (!signal) return promise
   return new Promise<T>((resolve, reject) => {
-    if (signal.aborted) {
-      reject(newAbortError())
-      return
-    }
     const cleanup = () => {
       const callbacks = { resolve, reject }
       // Prevent memory leaks.  If the input promise never resolves, then the handlers
@@ -33,5 +29,9 @@ export function abortable<T>(
       (value) => cleanup().resolve(value),
       (error) => cleanup().reject(error)
     )
+    if (signal.aborted) {
+      reject(newAbortError())
+      return
+    }
   })
 }

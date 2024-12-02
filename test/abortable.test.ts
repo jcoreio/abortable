@@ -33,6 +33,18 @@ describe(`abortable`, function () {
       p.resolve(42),
     ])
   })
+  it(`bug - unhandled rejection when signal is aborted`, async function () {
+    const p = withResolvers<number>()
+    const ac = new AbortController()
+    ac.abort()
+    const [, error] = tried(() => ac.signal.throwIfAborted())()
+    p.reject(new Error('test'))
+    await Promise.all([
+      expect(abortable(p.promise, ac.signal))
+        .to.be.rejectedWith(DOMException)
+        .that.eventually.deep.equals(error),
+    ])
+  })
   it(`rejects if signal aborts before promise resolves`, async function () {
     const p = withResolvers<number>()
     const ac = new AbortController()
