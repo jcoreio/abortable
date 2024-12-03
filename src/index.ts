@@ -24,14 +24,15 @@ export function abortable<T>(
       return callbacks
     }
     const onAbort = () => cleanup().reject(newAbortError())
-    signal.addEventListener('abort', onAbort)
+
     promise.then(
       (value) => cleanup().resolve(value),
       (error) => cleanup().reject(error)
     )
     if (signal.aborted) {
       reject(newAbortError())
-      return
+    } else {
+      signal.addEventListener('abort', onAbort)
     }
   })
 }
