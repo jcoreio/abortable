@@ -31,7 +31,7 @@ export function tried<Args extends any[], T>(
   if (isPromiseLike<T>(x)) {
     return (x as Promise<T>).then(
       (value) => [value, undefined],
-      (reason) => [undefined, reason]
+      (reason: unknown) => [undefined, reason]
     )
   }
   return (...args: Args) => {

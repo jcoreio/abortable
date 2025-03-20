@@ -10,6 +10,8 @@ export type PromiseWithResolvers<T> = {
  */
 export function withResolvers<T>(): PromiseWithResolvers<T>
 export function withResolvers<T>(
+  // typescript-eslint is buggy here
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
   this: PromiseConstructor
 ): PromiseWithResolvers<T>
 export function withResolvers<T>(
@@ -21,5 +23,11 @@ export function withResolvers<T>(
     resolve = res
     reject = rej
   })
-  return { promise, resolve: resolve!, reject: reject! }
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (!resolve || !reject) {
+    throw new Error(
+      'resolve or reject was undefined here, this should never happen'
+    )
+  }
+  return { promise, resolve, reject }
 }

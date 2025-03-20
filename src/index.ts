@@ -27,7 +27,7 @@ export function abortable<T>(
 
     promise.then(
       (value) => cleanup().resolve(value),
-      (error) => cleanup().reject(error)
+      (error: unknown) => cleanup().reject(error)
     )
     if (signal.aborted) {
       reject(newAbortError())
