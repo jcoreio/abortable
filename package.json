@@ -19,12 +19,12 @@
   ],
   "devDependencies": {
     "@jcoreio/eslint-plugin-implicit-dependencies": "^1.1.1",
-    "@jcoreio/toolchain": "5.1.2",
-    "@jcoreio/toolchain-circle": "^5.1.2",
-    "@jcoreio/toolchain-esnext": "^5.1.2",
-    "@jcoreio/toolchain-mocha": "^5.1.2",
-    "@jcoreio/toolchain-semantic-release": "^5.1.2",
-    "@jcoreio/toolchain-typescript": "^5.1.2",
+    "@jcoreio/toolchain": "5.2.0",
+    "@jcoreio/toolchain-circle": "^5.2.0",
+    "@jcoreio/toolchain-esnext": "^5.2.0",
+    "@jcoreio/toolchain-mocha": "^5.2.0",
+    "@jcoreio/toolchain-semantic-release": "^5.2.0",
+    "@jcoreio/toolchain-typescript": "^5.2.0",
     "@types/chai": "^4.3.5",
     "@types/chai-as-promised": "^7.1.5",
     "@types/mocha": "^10.0.1",
@@ -65,6 +65,6 @@
     "@babel/runtime": "^7.26.0"
   },
   "@jcoreio/toolchain": {
-    "migratedVersion": "5.1.2"
+    "migratedVersion": "5.2.0"
   }
 }
