@@ -60,7 +60,7 @@
       "default": "./dist/index.js"
     }
   },
-  "packageManager": "pnpm@8.11.0",
+  "packageManager": "pnpm@10.6.5",
   "dependencies": {
     "@babel/runtime": "^7.26.0"
   },
