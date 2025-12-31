@@ -30,6 +30,7 @@ describe(`abortable`, function () {
       expect(abortable(p.promise, ac.signal))
         .to.be.rejectedWith(DOMException)
         .that.eventually.deep.equals(error),
+      // eslint-disable-next-line @typescript-eslint/await-thenable
       p.resolve(42),
     ])
   })
@@ -54,7 +55,9 @@ describe(`abortable`, function () {
         .that.eventually.deep.equals(
           new DOMException('This operation was aborted', 'AbortError')
         ),
+      // eslint-disable-next-line @typescript-eslint/await-thenable
       ac.abort(),
+      // eslint-disable-next-line @typescript-eslint/await-thenable
       p.resolve(42),
     ])
   })
@@ -67,7 +70,9 @@ describe(`abortable`, function () {
         .that.eventually.deep.equals(
           new DOMException('This operation was aborted', 'AbortError')
         ),
+      // eslint-disable-next-line @typescript-eslint/await-thenable
       ac.abort(),
+      // eslint-disable-next-line @typescript-eslint/await-thenable
       p.reject(new Error('test')),
     ])
   })
