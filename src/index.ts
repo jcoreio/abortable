@@ -23,7 +23,7 @@ export function abortable<T>(
       signal.removeEventListener('abort', onAbort)
       return callbacks
     }
-    const onAbort = () => cleanup().reject(newAbortError())
+    const onAbort = () => cleanup().reject(signal.reason)
 
     promise.then(
       (value) => cleanup().resolve(value),
