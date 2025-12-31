@@ -1,5 +1,5 @@
 import { describe, it } from 'mocha'
-import { abortable } from '../src/index'
+import { abortable, newAbortError } from '../src/index'
 import { expect } from 'chai'
 import { withResolvers } from './withResolvers'
 import { tried } from './tried'
@@ -76,4 +76,9 @@ describe(`abortable`, function () {
       p.reject(new Error('test')),
     ])
   })
+})
+it('newAbortError works', function () {
+  expect(newAbortError()).to.be.an.instanceOf(DOMException)
+  expect(newAbortError().name).to.equal('AbortError')
+  expect(newAbortError().message).to.equal('This operation was aborted')
 })

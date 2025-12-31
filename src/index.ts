@@ -30,7 +30,8 @@ export function abortable<T>(
       (error: unknown) => cleanup().reject(error)
     )
     if (signal.aborted) {
-      reject(newAbortError())
+      // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+      reject(signal.reason)
     } else {
       signal.addEventListener('abort', onAbort)
     }
