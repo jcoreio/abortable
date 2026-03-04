@@ -8,6 +8,7 @@ export function abortable<T>(
   signal: AbortSignal | undefined
 ): Promise<T> {
   if (!signal) return promise
+  // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
   if (signal.aborted) return Promise.reject(signal.reason)
   return new Promise<T>((resolve, reject) => {
     const cleanup = () => {
