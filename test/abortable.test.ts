@@ -39,7 +39,6 @@ describe(`abortable`, function () {
     const ac = new AbortController()
     ac.abort()
     const [, error] = tried(() => ac.signal.throwIfAborted())()
-    p.promise.catch(() => {})
     p.reject(new Error('test'))
     await Promise.all([
       expect(abortable(p.promise, ac.signal))
