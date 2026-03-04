@@ -39,7 +39,9 @@ describe(`abortable`, function () {
     const ac = new AbortController()
     ac.abort()
     const [, error] = tried(() => ac.signal.throwIfAborted())()
-    p.reject(new Error('test'))
+    p.reject(new Error('test')) // this is intentionally uncaught,
+    // we're testing that abortable catches any rejection even if the signal is
+    // already aborted
     await Promise.all([
       expect(abortable(p.promise, ac.signal))
         .to.be.rejectedWith(DOMException)
