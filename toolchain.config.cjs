@@ -1,7 +1,7 @@
 /* eslint-env node, es2018 */
 module.exports = {
-  cjsBabelEnv: { forceAllTransforms: true },
-  esmBabelEnv: { targets: { node: 16 } },
+  cjsBabelEnv: { targets: { node: 20 } },
+  esmBabelEnv: { targets: { node: 20 } },
   // outputEsm: false, // disables ESM output (default: true)
   buildIgnore: [],
   hasTypeScriptSources: true,

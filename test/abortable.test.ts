@@ -1,13 +1,13 @@
 import { describe, it } from 'mocha'
-import { abortable, newAbortError } from '../src/index'
+import { abortable, newAbortError, AbortError } from '../src/index'
 import { expect } from 'chai'
 import { withResolvers } from './withResolvers'
 import { tried } from './tried'
 
 describe(`abortable`, function () {
-  it(`returns promise if signal is undefined`, async function () {
+  it(`resolves to promise if signal is undefined`, async function () {
     const promise = Promise.resolve(42)
-    expect(abortable(promise, undefined)).to.equal(promise)
+    expect(await abortable(promise, undefined)).to.equal(42)
   })
   it(`resolves if promise resolves first`, async function () {
     const ac = new AbortController()
@@ -28,8 +28,8 @@ describe(`abortable`, function () {
     const [, error] = tried(() => ac.signal.throwIfAborted())()
     await Promise.all([
       expect(abortable(p.promise, ac.signal))
-        .to.be.rejectedWith(DOMException)
-        .that.eventually.deep.equals(error),
+        .to.be.rejectedWith(AbortError)
+        .that.eventually.deep.equals(new AbortError(error)),
       // eslint-disable-next-line @typescript-eslint/await-thenable
       p.resolve(42),
     ])
@@ -44,8 +44,8 @@ describe(`abortable`, function () {
     // already aborted
     await Promise.all([
       expect(abortable(p.promise, ac.signal))
-        .to.be.rejectedWith(DOMException)
-        .that.eventually.deep.equals(error),
+        .to.be.rejectedWith(AbortError)
+        .that.eventually.deep.equals(new AbortError(error)),
     ])
   })
   it(`rejects if signal aborts before promise resolves`, async function () {
@@ -53,9 +53,9 @@ describe(`abortable`, function () {
     const ac = new AbortController()
     await Promise.all([
       expect(abortable(p.promise, ac.signal))
-        .to.be.rejectedWith(DOMException)
+        .to.be.rejectedWith(AbortError)
         .that.eventually.deep.equals(
-          new DOMException('This operation was aborted', 'AbortError')
+          new AbortError(tried(() => ac.signal.throwIfAborted())()[1])
         ),
       // eslint-disable-next-line @typescript-eslint/await-thenable
       ac.abort(),
@@ -68,14 +68,34 @@ describe(`abortable`, function () {
     const ac = new AbortController()
     await Promise.all([
       expect(abortable(p.promise, ac.signal))
-        .to.be.rejectedWith(DOMException)
+        .to.be.rejectedWith(AbortError)
         .that.eventually.deep.equals(
-          new DOMException('This operation was aborted', 'AbortError')
+          new AbortError(tried(() => ac.signal.throwIfAborted())()[1])
         ),
       // eslint-disable-next-line @typescript-eslint/await-thenable
       ac.abort(),
       // eslint-disable-next-line @typescript-eslint/await-thenable
       p.reject(new Error('test')),
+    ])
+  })
+  it(`rejection error has both stack traces`, async function () {
+    async function makePromise(signal: AbortSignal) {
+      const p = withResolvers<number>()
+      return await abortable(p.promise, signal)
+    }
+
+    const ac = new AbortController()
+    await Promise.all([
+      makePromise(ac.signal).catch((error: unknown) => {
+        if (!(error instanceof AbortError)) {
+          throw new Error('expected error to be an AbortError')
+        }
+        expect(error).to.be.instanceOf(AbortError)
+        expect(error.stack).to.include('makePromise')
+        expect(error.cause).to.be.instanceOf(DOMException)
+      }),
+      // eslint-disable-next-line @typescript-eslint/await-thenable
+      ac.abort(),
     ])
   })
 })
