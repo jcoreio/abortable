@@ -18,12 +18,12 @@
     "promise"
   ],
   "devDependencies": {
-    "@jcoreio/toolchain": "5.8.8",
-    "@jcoreio/toolchain-circle": "^5.8.8",
-    "@jcoreio/toolchain-esnext": "^5.8.8",
-    "@jcoreio/toolchain-mocha": "^5.8.8",
-    "@jcoreio/toolchain-semantic-release": "^5.8.8",
-    "@jcoreio/toolchain-typescript": "^5.8.8",
+    "@jcoreio/toolchain": "5.10.8",
+    "@jcoreio/toolchain-circle": "^5.10.8",
+    "@jcoreio/toolchain-esnext": "^5.10.8",
+    "@jcoreio/toolchain-mocha": "^5.10.8",
+    "@jcoreio/toolchain-semantic-release": "^5.10.8",
+    "@jcoreio/toolchain-typescript": "^5.10.8",
     "@types/chai": "^4.3.5",
     "@types/chai-as-promised": "^7.1.5",
     "@types/mocha": "^10.0.1",
@@ -70,6 +70,6 @@
     "verror": "^1.10.1"
   },
   "@jcoreio/toolchain": {
-    "migratedVersion": "5.8.8"
+    "migratedVersion": "5.10.8"
   }
 }
